@@ -45,7 +45,7 @@ To get started with this project, follow these steps:
 
 3. **Configure Authentication**: Set up the desired authentication methods in the Firebase console.
 
-4. **Integrate Firebase Go Client**: Follow the project's (documentation)[https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjnl5XG7feEAxUgTUEAHW3LDbQQFnoECBYQAQ&url=https%3A%2F%2Ffirebaseopensource.com%2Fprojects%2Ffirebase%2Ffirebase-admin-go%2F&usg=AOvVaw1ee2k1xUMEFNFYBKMcoKqU&opi=89978449] to integrate the Firebase Go client into your Go application.
+4. **Integrate Firebase Go Client**: Follow the project's [documentation](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjnl5XG7feEAxUgTUEAHW3LDbQQFnoECBYQAQ&url=https%3A%2F%2Ffirebaseopensource.com%2Fprojects%2Ffirebase%2Ffirebase-admin-go%2F&usg=AOvVaw1ee2k1xUMEFNFYBKMcoKqU&opi=89978449) to integrate the Firebase Go client into your Go application.
 
 5. **Clone the git repo**: ```git clone https://github.com/Cprime50/Fire-Go```
 6. **Obtain Your Firebase Private Key**:
