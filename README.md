@@ -1,11 +1,19 @@
-A reference to implementing authentication and authorization in Go using the Firebase Go client. This project demonstrates how to securely manage user access and data in Go with Firebase.
+# Secure Go Apps with Firebase: Authentication and Authorization
 
-Article a work in progress:
+## Overview
+
+This project highlights the ease of implementing authentication and authorization in Go applications using Firebase. It serves as a practical guide to securely managing user access and data with Firebase.
+
+## Why Choose Firebase for Authentication in Go?
+
+Firebase offers several advantages which includes:
+
+- **User Authentication**: Authenticating users via the Firebase Go client from browsers or any client.
+- **Token Verification**: Ensuring Firebase tokens are valid and untampered.
+- **Session Management**: Implementing secure user sessions for maintaining user state across requests.
+- **Access Control**: Managing access to resources based on user roles and permissions.
 
 
-## Introduction
-
-This project showcases the simplicity of using Firebase for authentication and authorization in Go. 
 
 ## Why Firebase for Authentication in Go?
 
@@ -30,10 +38,15 @@ This project addresses the challenge of securely authenticating and authorizing 
 
 To get started with this project, follow these steps:
 
-1. **Install the Firebase Go Client**: Ensure you have the Firebase Go client installed in your Go environment.
+1. **Install the Firebase Go Client**: Install the firebase Go client in your Go environment.
+```go get firebase.google.com/go/v4/```
+
 2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one.
+
 3. **Configure Authentication**: Set up the desired authentication methods in the Firebase console.
-4. **Integrate Firebase Go Client**: Follow the project's documentation to integrate the Firebase Go client into your Go application.
+
+4. **Integrate Firebase Go Client**: Follow the project's (documentation)[https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjnl5XG7feEAxUgTUEAHW3LDbQQFnoECBYQAQ&url=https%3A%2F%2Ffirebaseopensource.com%2Fprojects%2Ffirebase%2Ffirebase-admin-go%2F&usg=AOvVaw1ee2k1xUMEFNFYBKMcoKqU&opi=89978449] to integrate the Firebase Go client into your Go application.
+
 5. **Clone the git repo**: ```git clone https://github.com/Cprime50/Fire-Go```
 6. **Obtain Your Firebase Private Key**:
    - Navigate to the Firebase Console and download your project's private key , this will be a JSON file.
