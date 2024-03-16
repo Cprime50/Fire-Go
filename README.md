@@ -1,4 +1,4 @@
-# Secure Go Apps with Firebase: Authentication and Authorization
+# Fire-Go: Secure Go apps with firebase Authentication and Authorization
 
 ## Overview
 
