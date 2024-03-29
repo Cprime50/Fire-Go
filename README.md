@@ -38,18 +38,20 @@ This project addresses the challenge of securely authenticating and authorizing 
 
 To get started with this project, follow these steps:
 
-1. **Install the Firebase Go Client**: Install the firebase Go client in your Go environment.
-```go get firebase.google.com/go/v4/```
+1. **Install the Go dependencys**: cd into project folder and run
+```go mod tidy```
 
-2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one.
+
+2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one in your [firebase console](https://console.firebase.google.com)
 
 3. **Configure Authentication**: Set up the desired authentication methods in the Firebase console.
 
 4. **Integrate Firebase Go Client**: Follow the project's [documentation](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjnl5XG7feEAxUgTUEAHW3LDbQQFnoECBYQAQ&url=https%3A%2F%2Ffirebaseopensource.com%2Fprojects%2Ffirebase%2Ffirebase-admin-go%2F&usg=AOvVaw1ee2k1xUMEFNFYBKMcoKqU&opi=89978449) to integrate the Firebase Go client into your Go application.
 
 5. **Clone the git repo**: ```git clone https://github.com/Cprime50/Fire-Go```
+
 6. **Obtain Your Firebase Private Key**:
-   - Navigate to the Firebase Console and download your project's private key , this will be a JSON file.
+   - Navigate to the Firebase Console, under project settings, service accounts and download your project's private key.
    - For security, it's recommended to store this key in a `.env` file.
 
 7. **Create .env file**:**Create a `.env` File**:
