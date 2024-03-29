@@ -63,56 +63,41 @@
 <div class="container">
     <h2>Sign in with</h2>
     <button class="auth-button" id="signin-with-google"><i class="fab fa-google icon"></i>Google</button>
-    <button class="auth-button" id="signin-with-github"><i class="fab fa-github icon"></i>GitHub</button>
 </div>
-</head>
-<body>
 
-   
-    
-    <script type="module">
+<script type="module">
 
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD-6hmRUxveD3d5tfc3r3GsWHlACAmmLiY",
+        authDomain: "fire-go-f09d0.firebaseapp.com",
+        projectId: "fire-go-f09d0",
+        storageBucket: "fire-go-f09d0.appspot.com",
+        messagingSenderId: "414259249503",
+        appId: "1:414259249503:web:0d9ca2c5ab28cfbd9bf6ea"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    auth.onAuthStateChanged(console.log);
+
+    const googleProvider = new GoogleAuthProvider();
 
     
-      const firebaseConfig = {
-    
-        apiKey: "AIzaSyC0fT9_qUPsmSX0ZFRbziEH-OMZZMM8EGE",
-    
-        authDomain: "messagerr-34e08.firebaseapp.com",
-    
-        projectId: "messagerr-34e08",
-    
-        storageBucket: "messagerr-34e08.appspot.com",
-    
-        messagingSenderId: "932170096881",
-    
-        appId: "1:932170096881:web:9e304792eb18009e824950",
-    
-        measurementId: "G-L0N99CTTCF"
-    
-      };
-    
-    
-     // Initialize Firebase
-     const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+    document.querySelector('#signin-with-google').onclick = async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+        } catch (error) {
+            console.error("Error signing in with Google:", error.message);
+            alert("Error signing in with Google. Please try again.");
+        }
+    };
 
-        auth.onAuthStateChanged(console.log);
-
-        // Create Firebase authentication providers
-        const googleProvider = new GoogleAuthProvider();
-        const githubProvider = new GithubAuthProvider();
-        const SignUpEmailPass = new createUserWithEmailAndPassword(email, password);
-        const SignInEmailPass = new signInWithEmailAndPassword(email, password);
-
-        // Attach click event listeners to sign-in buttons
-        document.querySelector('#signin-with-google').onclick = () => signInWithPopup(auth, googleProvider);
-        document.querySelector('#signin-with-github').onclick = () => signInWithPopup(auth, githubProvider);
-        
-
-    </script>
+</script>
 </body>
 </html>

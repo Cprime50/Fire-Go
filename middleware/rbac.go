@@ -78,7 +78,6 @@ func MakeUser(ctx context.Context, client *auth.Client, userID string) error {
 	if user == nil {
 		return fmt.Errorf("MakeUser Error: User with ID %s not found", userID)
 	}
-
 	currentCustomClaims := user.CustomClaims
 	if currentCustomClaims == nil {
 		currentCustomClaims = map[string]interface{}{}
