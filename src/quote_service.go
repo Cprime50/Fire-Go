@@ -69,10 +69,12 @@ func UpdateQuote(c *gin.Context) {
 		return
 	}
 
-	if role != "admin" || uid != quote.UserId {
-		log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, user.(*middleware.User).Role)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete quote: "})
-		return
+	if role != "admin" {
+		if uid != quote.UserId {
+			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, role)
+			c.JSON(http.StatusForbidden, gin.H{"error": "not authorized"})
+			return
+		}
 	}
 
 	err = updateQuote(&Quote{
@@ -110,11 +112,14 @@ func DeleteQuote(c *gin.Context) {
 		}
 		return
 	}
-	if role != "admin" || uid != quote.UserId {
-		log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, user.(*middleware.User).Role)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete quote: "})
-		return
+	if role != "admin" {
+		if uid != quote.UserId {
+			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, role)
+			c.JSON(http.StatusForbidden, gin.H{"error": "not authorized"})
+			return
+		}
 	}
+
 	err = deleteQuote(id)
 	if err != nil {
 		log.Println("Error deleting quote:", err)
