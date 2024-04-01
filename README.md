@@ -1,6 +1,6 @@
 # Fire-Go: Building Modern && Secure Go apps with firebase Auth
 
-![Fire-Go Flow](https://github.com/github.png)
+![Fire-Go Flow](https://github.com/Cprime50/Fire-Go/blob/master/fire-go-flow.png)
 
 ## Overview
 
