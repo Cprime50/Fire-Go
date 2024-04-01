@@ -1,5 +1,7 @@
 # Fire-Go: Building Modern && Secure Go apps with firebase Auth
 
+![Fire-Go Flow](https://github.com/github.png)
+
 ## Overview
 
 Fire-Go is an example project that shows how easy it is to use Firebase Auth to build modern Go apps.
@@ -9,15 +11,15 @@ Fire-Go is an example project that shows how easy it is to use Firebase Auth to 
    - Firebase auth with Google Authentication
    - RBAC with firebase
    - JWT is used a session token.
-   - OpenApi Docs
+   - OpenApi Documentation with (huma)[https://huma.rocks/]
 
 ## Currently working on
 - Writing unit Tests
 - Deployment on Aws with Teraform
 - Client with nextjs
 
-## Article
-This article gives a very detailed guide on this application
+<!-- ## Article
+This article gives a very detailed guide on this application -->
 
 
 
@@ -67,6 +69,8 @@ FIREBASE_KEY= your_private_key.json
 Replace `youremail@mail.com` with your `admin email`, and `path/to/your_private_key.json` with the path to your Firebase private key.
 
 - **Admin Email**: This email will be set as the default admin when authenticated, assuming it doesn't already have an assigned role.
+
+8. 
 
 
 ## Contributing

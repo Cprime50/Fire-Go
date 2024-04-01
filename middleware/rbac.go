@@ -57,7 +57,7 @@ func MakeAdmin(ctx context.Context, client *auth.Client, email string) error {
 	if currentCustomClaims == nil {
 		currentCustomClaims = map[string]interface{}{}
 	}
-	currentCustomClaims["role"] = "admin" // Set the user role as admin
+	currentCustomClaims["role"] = "admin"
 
 	if _, found := currentCustomClaims["admin"]; !found {
 		currentCustomClaims["admin"] = true

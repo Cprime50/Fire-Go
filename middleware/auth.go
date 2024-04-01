@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"sync"
 	"time"
 
 	firebase "firebase.google.com/go/v4"
@@ -21,11 +20,6 @@ type User struct {
 	Email  string `json:"email"`
 	Role   string `json:"role"`
 }
-
-var (
-	tokenCache = make(map[string]*auth.Token)
-	cacheMutex sync.Mutex
-)
 
 func Auth(client *auth.Client) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -45,27 +39,12 @@ func Auth(client *auth.Client) gin.HandlerFunc {
 		}
 		tokenID := idToken[1]
 
-		cacheMutex.Lock()
-		defer cacheMutex.Unlock()
-
-		// Check if token is in cache
-		if token, ok := tokenCache[tokenID]; ok {
-			processToken(ctx, client, token)
-			log.Println("Auth time:", time.Since(startTime))
-			return
-		}
-
-		// Token not in cache, verify it
 		token, err := client.VerifyIDToken(context.Background(), tokenID)
 		if err != nil {
 			log.Printf("Error verifying token. Error: %v\n", err)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized, Invalid Token"})
 			return
 		}
-
-		// Cache verified token
-		tokenCache[tokenID] = token
-
 		processToken(ctx, client, token)
 		log.Println("Auth time:", time.Since(startTime))
 	}
@@ -82,10 +61,6 @@ func processToken(ctx *gin.Context, client *auth.Client, token *auth.Token) {
 	log.Println("auth email is ", email)
 
 	role, ok := token.Claims["role"].(string)
-	if email != adminEmail {
-		log.Println("adminEmail", adminEmail)
-		log.Println("Email", email)
-	}
 	if email == adminEmail && role == "user" || !ok {
 		if err := MakeAdmin(ctx, client, adminEmail); err != nil {
 			log.Printf("Error making adminEmail admin: %v\n", err)
