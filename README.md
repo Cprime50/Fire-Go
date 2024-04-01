@@ -24,14 +24,17 @@ This article gives a very detailed guide on this application -->
 
 
 
-## Why Firebase for Authentication in Go?
+## Why Firebase for Authentication?
 
+- **Ease of Integration**
 
-- **Ease of Integration**: Firebase's Go client library makes it straightforward to integrate Firebase authentication into your Go app .
-- **Multiple Authentication Methods**: Firebase supports various authentication methods, including email/password, phone, and social logins, making it versatile for different user bases.
-- **Security**: Firebase handles the heavy lifting of security, including token management and encryption, ensuring that your application remains secure.
-- **Scalability**: Firebase's infrastructure is designed to scale automatically, making it suitable for applications of all sizes.
-- **Real-time Database**: Firebase's real-time database allows for easy data synchronization across clients, enhancing the user experience.
+- **Multiple Authentication Methods**
+
+- **Security**
+
+- **Scalability**
+
+- **Real-time Database**
 
 
 
