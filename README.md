@@ -12,15 +12,24 @@ Fire-Go is an example application of how to create simple, high-performance appl
    - Sqlite3.
    - Firebase auth with Google Authentication
    - RBAC with firebase
-   - Docker deployment
-   - Github Actions
-   
+   - Gin-swagger documentation
+
+## Articles
+
+As I work on this project, I'll be sharing articles along the way.
+
+1. [Building Simple Modern Go apps](https://medium.com/@charlesdpj78/building-simple-modern-go-apps-kiss-pattern-with-go-firebase-sqlite-3b6803ddcba4)
+
 
 ## Currently working on
-This project is still a work in progress, I am looking to add the following features:
-- OpenApi Documentation with [huma](https://huma.rocks/)
+This project is still a work in progress, I am working on the following features:
 - Writing unit Tests
-- Deploy on Aws with Teraform
+- Docker deployment
+- Github Actions
+- Deploy on Aws
+- OpenApi Documentation with [huma](https://huma.rocks/)
+- Kubernetes
+- Teraform
 - Client with nextjs
 
 <!-- ## Article
