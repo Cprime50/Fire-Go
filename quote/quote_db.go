@@ -1,7 +1,8 @@
-package src
+package quote
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
@@ -17,6 +18,14 @@ type Quote struct {
 	Approved  bool      `json:"approved"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+var (
+	ErrQuoteNotFound             = errors.New("quote not found")
+	ErrProfileNotFound           = errors.New("profile not found")
+	ErrDuplicateEntry            = errors.New("duplicate entry")
+	ErrForeignKeyViolation       = errors.New("foreign key violation")
+	ErrUniqueConstraintViolation = errors.New("unique constraint violation")
+)
 
 func createQuote(quote *Quote) error {
 	id, err := uuid.NewRandom()

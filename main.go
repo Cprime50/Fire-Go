@@ -7,9 +7,12 @@ import (
 
 	"firebase.google.com/go/v4/auth"
 
+	"github.com/cprime50/fire-go/admin"
 	"github.com/cprime50/fire-go/db"
 	"github.com/cprime50/fire-go/middleware"
-	"github.com/cprime50/fire-go/src"
+	"github.com/cprime50/fire-go/profile"
+	"github.com/cprime50/fire-go/quote"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -66,25 +69,25 @@ func loadEnv() {
 	log.Println(".env file loaded successfully")
 }
 
-// Auth routes
 func RegisterRoutes(r *gin.Engine, client *auth.Client) {
 	profileRoutes := r.Group("/profile")
 	profileRoutes.Use(middleware.Auth(client))
 	{
 
-		profileRoutes.POST("/create", src.CreateProfile)
-		profileRoutes.PUT("/update", src.UpdateProfile)
-		profileRoutes.DELETE("/delete/:id", src.DeleteProfile)
-		profileRoutes.GET("/:id", src.GetProfile)
+		profileRoutes.POST("/create", profile.CreateProfile)
+		profileRoutes.PUT("/update", profile.UpdateProfile)
+		profileRoutes.DELETE("/delete/:id", profile.DeleteProfile)
+		profileRoutes.GET("/:id", profile.GetProfile)
 	}
+
 	quoteRoutes := r.Group("/quote")
 	quoteRoutes.Use(middleware.Auth(client))
 	{
-		quoteRoutes.GET("/", src.GetQuotes)
-		quoteRoutes.POST("/create", src.CreateQuote)
-		quoteRoutes.PUT("/update", src.UpdateQuote)
-		quoteRoutes.DELETE("/delete/:id", src.DeleteQuote)
-		quoteRoutes.GET("/:profile-id", src.GetQuotesByUserId)
+		quoteRoutes.GET("/", quote.GetQuotes)
+		quoteRoutes.POST("/create", quote.CreateQuote)
+		quoteRoutes.PUT("/update", quote.UpdateQuote)
+		quoteRoutes.DELETE("/delete/:id", quote.DeleteQuote)
+		quoteRoutes.GET("/:profile-id", quote.GetQuotesByUserId)
 
 	}
 }
@@ -95,14 +98,14 @@ func RegisterAdminRoutes(r *gin.Engine, client *auth.Client) {
 	adminRoutes := r.Group("/admin")
 	adminRoutes.Use(middleware.Auth(client), middleware.RoleAuth("admin"))
 	{
-		adminRoutes.GET("/profiles", src.GetAllProfiles)
-		adminRoutes.POST("/quote/approve/:id", src.ApproveQuote)
-		adminRoutes.GET("/quotes/unapproved", src.GetUnapprovedQuotes)
+		adminRoutes.GET("/profiles", profile.GetAllProfiles)
+		adminRoutes.POST("/quote/approve/:id", quote.ApproveQuote)
+		adminRoutes.GET("/quotes/unapproved", quote.GetUnapprovedQuotes)
 		adminRoutes.POST("/make", func(ctx *gin.Context) {
-			src.MakeAdmin(ctx, client)
+			admin.MakeAdmin(ctx, client)
 		})
 		adminRoutes.DELETE("/remove", func(ctx *gin.Context) {
-			src.RemoveAdmin(ctx, client)
+			admin.RemoveAdmin(ctx, client)
 		})
 
 	}

@@ -1,41 +1,30 @@
-# Fire-Go: Building Modern && Secure Go apps with firebase Auth
-
+# Fire-Go: Building Simple Modern Go Apps: DDD pattern with Go, Firebase, SQLite
 
 ![Fire-Go](fire-go-flow.png)
 
 ## Overview
 
-Fire-Go is an example project that shows how easy it is to use Firebase Auth to build modern Go apps.
-
+Fire-Go is an example application of how to create simple, high-performance applications that are both easy to develop and maintainable in the long run.
+   
+   - DDD, Modular monolith design
+   - REST
    - Go and Gin framework.
-   - Sqlite3 for db.
+   - Sqlite3.
    - Firebase auth with Google Authentication
    - RBAC with firebase
-   - JWT is used a session token.
-   - OpenApi Documentation with [huma](https://huma.rocks/)
+   - Docker deployment
+   - Github Actions
+   
 
 ## Currently working on
+This project is still a work in progress, I am looking to add the following features:
+- OpenApi Documentation with [huma](https://huma.rocks/)
 - Writing unit Tests
-- Deployment on Aws with Teraform
+- Deploy on Aws with Teraform
 - Client with nextjs
 
 <!-- ## Article
 This article gives a very detailed guide on this application -->
-
-
-
-## Why Firebase for Authentication?
-
-- **Ease of Integration**
-
-- **Multiple Authentication Methods**
-
-- **Security**
-
-- **Scalability**
-
-- **Real-time Database**
-
 
 
 ## Getting Started
@@ -46,17 +35,13 @@ To get started with this project, follow these steps:
 
 2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one in your [firebase console](https://console.firebase.google.com)
 
-3. **Configure Authentication**: Set up the desired authentication methods in the Firebase console.
-
-4. **Integrate Firebase Go Client**: Follow the project's [documentation](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjnl5XG7feEAxUgTUEAHW3LDbQQFnoECBYQAQ&url=https%3A%2F%2Ffirebaseopensource.com%2Fprojects%2Ffirebase%2Ffirebase-admin-go%2F&usg=AOvVaw1ee2k1xUMEFNFYBKMcoKqU&opi=89978449) to integrate the Firebase Go client into your Go application.
-
-5. **Install the Go dependencys**: cd into project folder and run
+3. **Install the Go dependencys**: cd into project folder and run
 ```go mod tidy```
 
 
 6. **Obtain Your Firebase Private Key**:
    - Navigate to the Firebase Console, under project settings, service accounts and download your project's private key.
-   - For security, it's recommended to store this key in a `.env` file.
+   - For security, store this key in a `.env` file.
 
 7. **Create .env file**:**Create a `.env` File**:
    - In the root directory of the project, create a `.env` file.
@@ -72,7 +57,7 @@ FIREBASE_KEY= your_private_key.json
 
 Replace `youremail@mail.com` with your `admin email`, and `path/to/your_private_key.json` with the path to your Firebase private key.
 
-- **Admin Email**: This email will be set as the default admin when authenticated, assuming it doesn't already have an assigned role.
+- **Admin Email**: This email will be set as the default admin when authenticated
 
 
 

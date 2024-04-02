@@ -1,4 +1,4 @@
-package src
+package admin
 
 import (
 	"fmt"

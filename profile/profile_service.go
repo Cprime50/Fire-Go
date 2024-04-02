@@ -1,4 +1,4 @@
-package src
+package profile
 
 import (
 	"errors"
@@ -150,4 +150,12 @@ func GetAllProfiles(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"profiles": profiles})
+}
+
+func getUserFromCtx(ctx *gin.Context) (any, bool) {
+	user, exists := ctx.Get("user")
+	if !exists {
+		return "", false
+	}
+	return user, true
 }
