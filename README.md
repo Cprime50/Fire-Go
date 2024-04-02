@@ -39,7 +39,9 @@ git clone https://github.com/Cprime50/Fire-Go
 2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one in your [firebase console](https://console.firebase.google.com)
 
 3. **Install the Go dependencys**: cd into project folder and run
-```go mod tidy```
+```yaml
+go mod tidy
+```
 
 
 6. **Obtain Your Firebase Private Key**:
