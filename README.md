@@ -31,7 +31,10 @@ This article gives a very detailed guide on this application -->
 
 To get started with this project, follow these steps:
 
-1. **Clone the git repo**: ```git clone https://github.com/Cprime50/Fire-Go```
+1. **Clone the git repo**: 
+``` yaml
+git clone https://github.com/Cprime50/Fire-Go
+```
 
 2. **Set Up Firebase Project**: Create a new Firebase project or use an existing one in your [firebase console](https://console.firebase.google.com)
 
