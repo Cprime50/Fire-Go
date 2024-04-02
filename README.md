@@ -1,4 +1,4 @@
-# Fire-Go: Building Simple Modern Go Apps: DDD pattern with Go, Firebase, SQLite
+# Fire-Go: Building Simple Modern Go Apps: KISS pattern with Go, Firebase, SQLite
 
 ![Fire-Go](fire-go-flow.png)
 
@@ -6,7 +6,7 @@
 
 Fire-Go is an example application of how to create simple, high-performance applications that are both easy to develop and maintainable in the long run.
    
-   - DDD, Modular monolith design
+   - KISS, Modular monolith design
    - REST
    - Go and Gin framework.
    - Sqlite3.
