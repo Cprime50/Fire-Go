@@ -9,25 +9,43 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Create Quote handler
+type QuoteRequest struct {
+	Quote string `json:"quote"`
+}
+
+type QuoteUpdateRequest struct {
+	Id    string `json:"id"`
+	Quote string `json:"quote"`
+}
+
+// @Summary Create quote
+// @Description Create a new quote
+// @Tags quote
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param requestBody body QuoteRequest true "Quote details"
+// @Success 201 {string} string "Quote created successfully"
+// @Failure 400 {string} string "Invalid request body"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Failed to create quote"
+// @Router /quote/create [post]
 func CreateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
+	var quoteRequest QuoteRequest
 	userData := user.(*middleware.User)
-	var requestBody struct {
-		Quote string `json:"quote"`
-	}
-	if err := c.ShouldBindJSON(&requestBody); err != nil {
+	if err := c.ShouldBindJSON(&quoteRequest); err != nil {
 		log.Println("Error binding incoming json data", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 	err := createQuote(&Quote{
 		UserId:   userData.UserID,
-		Quote:    requestBody.Quote,
+		Quote:    quoteRequest.Quote,
 		Approved: false,
 	})
 	if err != nil {
@@ -35,10 +53,23 @@ func CreateQuote(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create quote"})
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": requestBody.Quote})
+	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": quoteRequest.Quote})
 }
 
-// UpdateQuote
+// @Summary Update quote
+// @Description Update an existing quote
+// @Tags quote
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param requestBody body QuoteUpdateRequest true "Quote details"
+// @Success 201 {string} string "Quote updated successfully"
+// @Failure 400 {string} string "Invalid request body"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 403 {string} string "not authorized"
+// @Failure 404 {string} string "Quote not found"
+// @Failure 500 {string} string "Failed to update quote"
+// @Router /quote/update [put]
 func UpdateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -48,10 +79,7 @@ func UpdateQuote(c *gin.Context) {
 	uid := user.(*middleware.User).UserID
 	role := user.(*middleware.User).Role
 
-	var requestBody struct {
-		Id    string `json:"id"`
-		Quote string `json:"quote"`
-	}
+	var requestBody QuoteUpdateRequest
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		log.Println("Error binding incoming json data", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
@@ -90,7 +118,19 @@ func UpdateQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": requestBody.Quote})
 }
 
-// DeleteQuote
+// @Summary Delete quote
+// @Description Delete an existing quote
+// @Tags quote
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param id path string true "ID of the quote to delete"
+// @Success 201 {string} string "Quote deleted successfully"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 403 {string} string "not authorized"
+// @Failure 404 {string} string "Quote not found"
+// @Failure 500 {string} string "Failed to delete quote"
+// @Router /quote/delete/{id} [delete]
 func DeleteQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -129,7 +169,17 @@ func DeleteQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote deleted successfully"})
 }
 
-// GetQuotes
+// @Summary Get quotes
+// @Description Retrieve quotes based on user role
+// @Tags quote
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Success 200 {array} Quote "List of quotes"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "Quote not found"
+// @Failure 500 {string} string "Failed to get quote"
+// @Router /quote [get]
 func GetQuotes(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -160,7 +210,18 @@ func GetQuotes(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"quotes": quotes})
 }
 
-// GetQuoteByUserID
+// @Summary Get quotes by user ID
+// @Description Retrieve quotes by user ID
+// @Tags quote
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param profile-id path string true "User ID"
+// @Success 200 {array} Quote "List of quotes"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "Quote not found"
+// @Failure 500 {string} string "Failed to get quote"
+// @Router /quote/{profile-id} [get]
 func GetQuotesByUserId(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -194,6 +255,19 @@ func GetQuotesByUserId(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"quotes": quotes})
 }
 
+// @Summary Approve quote
+// @Description Approve a quote by ID
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param id path string true "Quote ID"
+// @Success 200 {string} string "Quote approved successfully"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 403 {string} string "Unauthorized"
+// @Failure 404 {string} string "Quote not found"
+// @Failure 500 {string} string "Failed to approve quote"
+// @Router /admin/quote/approve/{id} [post]
 func ApproveQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -224,6 +298,17 @@ func ApproveQuote(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Quote approved successfully"})
 }
 
+// @Summary Get unapproved quotes
+// @Description Get all unapproved quotes
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Success 200 {array} Quote "List of unapproved quotes"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "No unapproved quotes found"
+// @Failure 500 {string} string "Failed to get unapproved quotes"
+// @Router /admin/quote/unapproved [get]
 func GetUnapprovedQuotes(c *gin.Context) {
 	unapprovedQuotes, err := getUnapprovedQuotes()
 	if err != nil {

@@ -12,7 +12,7 @@ Fire-Go is an example application of how to create simple, high-performance appl
    - Sqlite3.
    - Firebase auth with Google Authentication
    - RBAC with firebase
-   - Gin-swagger documentation
+   - Gin-swagger documentation http://localhost:3000/swagger/api/index.html
 
 ## Articles
 

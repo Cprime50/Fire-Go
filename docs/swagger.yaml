@@ -1,0 +1,611 @@
+basePath: /api
+definitions:
+  admin.EmailInput:
+    properties:
+      email:
+        type: string
+    type: object
+  profile.Profile:
+    properties:
+      bio:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  quote.Quote:
+    properties:
+      approved:
+        type: boolean
+      created_at:
+        type: string
+      id:
+        type: string
+      quote:
+        type: string
+      user_id:
+        type: string
+    type: object
+  quote.QuoteRequest:
+    properties:
+      quote:
+        type: string
+    type: object
+  quote.QuoteUpdateRequest:
+    properties:
+      id:
+        type: string
+      quote:
+        type: string
+    type: object
+host: localhost:8082
+info:
+  contact: {}
+  description: Build modern Go apps
+  title: Fire-Go
+paths:
+  /admin/make:
+    post:
+      consumes:
+      - application/json
+      description: Make a user an admin by email
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User email to make admin
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/admin.EmailInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User is now an admin
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Make user admin
+      tags:
+      - admin
+  /admin/profile:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all user profiles
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of user profiles
+          schema:
+            items:
+              $ref: '#/definitions/profile.Profile'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: No profiles found
+          schema:
+            type: string
+        "500":
+          description: Failed to retrieve profiles
+          schema:
+            type: string
+      summary: Get all profiles
+      tags:
+      - admin
+  /admin/quote/approve/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Approve a quote by ID
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Quote ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Quote approved successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "403":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Quote not found
+          schema:
+            type: string
+        "500":
+          description: Failed to approve quote
+          schema:
+            type: string
+      summary: Approve quote
+      tags:
+      - admin
+  /admin/quote/unapproved:
+    get:
+      consumes:
+      - application/json
+      description: Get all unapproved quotes
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of unapproved quotes
+          schema:
+            items:
+              $ref: '#/definitions/quote.Quote'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: No unapproved quotes found
+          schema:
+            type: string
+        "500":
+          description: Failed to get unapproved quotes
+          schema:
+            type: string
+      summary: Get unapproved quotes
+      tags:
+      - admin
+  /admin/remove:
+    delete:
+      consumes:
+      - application/json
+      description: Remove admin rights from a user by email
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User email to remove admin rights
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/admin.EmailInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User admin rights have been revoked
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Remove admin rights
+      tags:
+      - admin
+  /profile/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a user's profile by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile data
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Profile not found
+          schema:
+            type: string
+        "500":
+          description: Failed to retrieve profile
+          schema:
+            type: string
+      summary: Get a user's profile
+      tags:
+      - profile
+  /profile/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user profile
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Profile created successfully
+          schema:
+            type: string
+        "400":
+          description: Profile already exists
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Failed to create profile
+          schema:
+            type: string
+      summary: Create profile
+      tags:
+      - profile
+  /profile/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user's profile by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile deleted successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "403":
+          description: Not authorized
+          schema:
+            type: string
+        "404":
+          description: Profile not found
+          schema:
+            type: string
+        "500":
+          description: Failed to delete profile
+          schema:
+            type: string
+      summary: Delete a user's profile
+      tags:
+      - profile
+  /profile/update:
+    put:
+      consumes:
+      - application/json
+      description: Update the bio and username of the user profile
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: New bio
+        in: body
+        name: bio
+        required: true
+        schema:
+          type: string
+      - description: New username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Profile not found
+          schema:
+            type: string
+        "500":
+          description: Failed to update profile
+          schema:
+            type: string
+      summary: Update profile
+      tags:
+      - profile
+  /quote:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve quotes based on user role
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of quotes
+          schema:
+            items:
+              $ref: '#/definitions/quote.Quote'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Quote not found
+          schema:
+            type: string
+        "500":
+          description: Failed to get quote
+          schema:
+            type: string
+      summary: Get quotes
+      tags:
+      - quote
+  /quote/{profile-id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve quotes by user ID
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: profile-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of quotes
+          schema:
+            items:
+              $ref: '#/definitions/quote.Quote'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Quote not found
+          schema:
+            type: string
+        "500":
+          description: Failed to get quote
+          schema:
+            type: string
+      summary: Get quotes by user ID
+      tags:
+      - quote
+  /quote/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new quote
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Quote details
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/quote.QuoteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Quote created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Failed to create quote
+          schema:
+            type: string
+      summary: Create quote
+      tags:
+      - quote
+  /quote/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing quote
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the quote to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Quote deleted successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "403":
+          description: not authorized
+          schema:
+            type: string
+        "404":
+          description: Quote not found
+          schema:
+            type: string
+        "500":
+          description: Failed to delete quote
+          schema:
+            type: string
+      summary: Delete quote
+      tags:
+      - quote
+  /quote/update:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing quote
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Quote details
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/quote.QuoteUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Quote updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "403":
+          description: not authorized
+          schema:
+            type: string
+        "404":
+          description: Quote not found
+          schema:
+            type: string
+        "500":
+          description: Failed to update quote
+          schema:
+            type: string
+      summary: Update quote
+      tags:
+      - quote
+swagger: "2.0"

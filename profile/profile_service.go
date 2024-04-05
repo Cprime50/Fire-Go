@@ -11,6 +11,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Create profile
+// @Description Create a new user profile
+// @Tags profile
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Success 201 {string} string "Profile created successfully"
+// @Failure 400 {string} string "Profile already exists"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Failed to create profile"
+// @Router /profile/create [post]
 func CreateProfile(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -51,6 +62,20 @@ func CreateProfile(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Profile created successfully", "user_email": userData.Email})
 }
 
+// @Summary Update profile
+// @Description Update the bio and username of the user profile
+// @Tags profile
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param bio body string true "New bio"
+// @Param username body string true "New username"
+// @Success 200 {string} string "Profile updated successfully"
+// @Failure 400 {string} string "Invalid request body"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "Profile not found"
+// @Failure 500 {string} string "Failed to update profile"
+// @Router /profile/update [put]
 func UpdateProfile(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -87,6 +112,19 @@ func UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Profile updated successfully"})
 }
 
+// @Summary Delete a user's profile
+// @Description Delete a user's profile by ID
+// @Tags profile
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param Authorization header string true "JWT token"
+// @Success 200 {string} string "Profile deleted successfully"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 403 {string} string "Not authorized"
+// @Failure 404 {string} string "Profile not found"
+// @Failure 500 {string} string "Failed to delete profile"
+// @Router /profile/delete/{id} [delete]
 func DeleteProfile(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -119,6 +157,18 @@ func DeleteProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Profile deleted successfully"})
 }
 
+// @Summary Get a user's profile
+// @Description Retrieve a user's profile by ID
+// @Tags profile
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param Authorization header string true "JWT token"
+// @Success 200 {string} string "User profile data"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "Profile not found"
+// @Failure 500 {string} string "Failed to retrieve profile"
+// @Router /profile/{id} [get]
 func GetProfile(c *gin.Context) {
 	userID := c.Param("id")
 	profile, err := getProfileByUserId(userID)
@@ -136,6 +186,17 @@ func GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"profile": profile})
 }
 
+// @Summary Get all profiles
+// @Description Retrieve all user profiles
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Success 200 {array} Profile "List of user profiles"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string "No profiles found"
+// @Failure 500 {string} string "Failed to retrieve profiles"
+// @Router /admin/profile [get]
 func GetAllProfiles(c *gin.Context) {
 	profiles, err := getAllProfiles()
 	if err != nil {
