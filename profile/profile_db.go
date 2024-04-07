@@ -65,7 +65,7 @@ func getProfileByUserId(userId string) (*Profile, error) {
 	return profile, nil
 }
 
-func updateProdile(p *Profile) error {
+func updateProfile(p *Profile) error {
 	result, err := db.Db.Exec(
 		"UPDATE profiles SET bio = $1, username = $2, updated_at = $3 WHERE user_id = $4",
 		p.Bio,

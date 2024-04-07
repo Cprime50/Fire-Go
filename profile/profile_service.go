@@ -94,7 +94,7 @@ func UpdateProfile(c *gin.Context) {
 	}
 
 	// Update the profile bio in the database
-	err := updateProdile(&Profile{
+	err := updateProfile(&Profile{
 		UserId:    userData.UserID,
 		Bio:       requestBody.Bio,
 		UserName:  requestBody.Username,
