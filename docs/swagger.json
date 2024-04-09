@@ -2,10 +2,10 @@
     "swagger": "2.0",
     "info": {
         "description": "Build modern Go apps",
-        "title": "Fire-Go",
+        "title": "FireGo",
         "contact": {}
     },
-    "host": "https://cprime50.github.io/FireGo-swagger/",
+    "host": "cprime50.github.io/FireGo-swagger",
     "basePath": "/api",
     "paths": {
         "/admin/make": {
