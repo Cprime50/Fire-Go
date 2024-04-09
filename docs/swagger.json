@@ -5,7 +5,7 @@
         "title": "FireGo",
         "contact": {}
     },
-    "host": "cprime50.github.io/FireGo-swagger",
+    "host": "*",
     "basePath": "/api",
     "paths": {
         "/admin/make": {
