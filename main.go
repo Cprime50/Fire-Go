@@ -24,7 +24,7 @@ import (
 // @title Fire-Go
 // @description Build modern Go apps
 
-// @host localhost:8082
+// @host https://cprime50.github.io/FireGo-swagger/
 // @BasePath /api
 func main() {
 	loadEnv()

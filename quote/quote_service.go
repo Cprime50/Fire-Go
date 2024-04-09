@@ -18,17 +18,17 @@ type QuoteUpdateRequest struct {
 	Quote string `json:"quote"`
 }
 
-// @Summary Create quote
-// @Description Create a new quote
-// @Tags quote
+// @Summary Create a new quote
+// @Description This endpoint allows a user to submit a new quote.
+// @Tags Quote
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "JWT token"
-// @Param requestBody body QuoteRequest true "Quote details"
-// @Success 201 {string} string "Quote created successfully"
-// @Failure 400 {string} string "Invalid request body"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 500 {string} string "Failed to create quote"
+// @Param Authorization header string true "ID token"
+// @Param quote body QuoteRequest true "The quote to be submitted."
+// @Success 201 {object} map[string]string "{\"message\":\"Quote created successfully\", \"quote\":\"Example quote text\"}"
+// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
+// @Failure 400 {object} map[string]string "{\"error\":\"Invalid request body\"}"
+// @Failure 500 {object} map[string]string "{\"error\":\"Failed to create quote\"}"
 // @Router /quote/create [post]
 func CreateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
@@ -56,19 +56,20 @@ func CreateQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": quoteRequest.Quote})
 }
 
-// @Summary Update quote
-// @Description Update an existing quote
-// @Tags quote
+// @Summary Update an existing quote
+// @Description This endpoint allows a user to update an existing quote. Admins can update any quote.
+// @Tags Quote
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "JWT token"
-// @Param requestBody body QuoteUpdateRequest true "Quote details"
-// @Success 201 {string} string "Quote updated successfully"
-// @Failure 400 {string} string "Invalid request body"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 403 {string} string "not authorized"
-// @Failure 404 {string} string "Quote not found"
-// @Failure 500 {string} string "Failed to update quote"
+// @Param Authorization header string true "ID token"
+// @Param id path string true "The ID of the quote to be updated."
+// @Param quote body QuoteUpdateRequest true "The updated quote text."
+// @Success 200 {object} map[string]string "{\"message\":\"Quote updated successfully\", \"quote\":\"Updated quote text\"}"
+// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized access\"}"
+// @Failure 400 {object} map[string]string "{\"error\":\"Invalid request body\"}"
+// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
+// @Failure 403 {object} map[string]string "{\"error\":\"not authorized\"}"
+// @Failure 500 {object} map[string]string "{\"error\":\"Failed to update quote\"}"
 // @Router /quote/update [put]
 func UpdateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
@@ -118,18 +119,18 @@ func UpdateQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": requestBody.Quote})
 }
 
-// @Summary Delete quote
-// @Description Delete an existing quote
-// @Tags quote
+// @Summary Delete an existing quote
+// @Description This endpoint allows a user to delete an existing quote. Admins can delete any quote.
+// @Tags Quote
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "JWT token"
-// @Param id path string true "ID of the quote to delete"
-// @Success 201 {string} string "Quote deleted successfully"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 403 {string} string "not authorized"
-// @Failure 404 {string} string "Quote not found"
-// @Failure 500 {string} string "Failed to delete quote"
+// @Param Authorization header string true "ID token"
+// @Param id path string true "The ID of the quote to be deleted."
+// @Success 200 {object} map[string]string "{\"message\":\"Quote deleted successfully\"}"
+// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized access\"}"
+// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
+// @Failure 403 {object} map[string]string "{\"error\":\"not authorized\"}"
+// @Failure 400 {object} map[string]string "{\"error\":\"Failed to delete quote\"}"
 // @Router /quote/delete/{id} [delete]
 func DeleteQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
@@ -170,15 +171,15 @@ func DeleteQuote(c *gin.Context) {
 }
 
 // @Summary Get quotes
-// @Description Retrieve quotes based on user role
-// @Tags quote
+// @Description This endpoint retrieves quotes. Admins can retrieve all quotes, while other users can only retrieve approved quotes.
+// @Tags Quote
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "JWT token"
-// @Success 200 {array} Quote "List of quotes"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 404 {string} string "Quote not found"
-// @Failure 500 {string} string "Failed to get quote"
+// @Param Authorization header string true "ID token"
+// @Success 200 {object} map[string][]Quote "A list of quotes."
+// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
+// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
+// @Failure 500 {object} map[string]string "{\"error\":\"Failed to get quote\"}"
 // @Router /quote [get]
 func GetQuotes(c *gin.Context) {
 	user, ok := getUserFromCtx(c)

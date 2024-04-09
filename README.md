@@ -6,13 +6,15 @@
 
 Fire-Go is an example application of how to create simple, high-performance applications that are both easy to develop and maintainable in the long run.
    
-   - KISS, Modular monolith design
+   - KISS (Keep it simple stupid)
+   - Modular monolith architecture
    - REST
    - Go and Gin framework.
    - Sqlite3.
-   - Firebase auth with Google Authentication
+   - Firebase auth
    - RBAC with firebase
-   - Gin-swagger documentation http://localhost:3000/swagger/api/index.html
+   - Gin-swagger documentation
+   [local](http://localhost:3000/swagger/api/index.html)
 
 ## Articles
 

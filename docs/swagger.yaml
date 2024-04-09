@@ -47,7 +47,7 @@ definitions:
       quote:
         type: string
     type: object
-host: localhost:8082
+host: https://cprime50.github.io/FireGo-swagger/
 info:
   contact: {}
   description: Build modern Go apps
@@ -57,16 +57,16 @@ paths:
     post:
       consumes:
       - application/json
-      description: Make a user an admin by email
+      description: This endpoint allows an admin to promote a user to an admin role.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: User email to make admin
+      - description: The email of the user to be promoted to admin.
         in: body
-        name: email
+        name: body
         required: true
         schema:
           $ref: '#/definitions/admin.EmailInput'
@@ -74,31 +74,33 @@ paths:
       - application/json
       responses:
         "200":
-          description: User is now an admin
+          description: '{\"message\":\"User example@example.com is now an admin\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Invalid request body
+          description: '{\"error\":\"error validating email: invalid format\"}'
           schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Internal Server Error
+          description: '{\"error\":\"error making admin:\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
       summary: Make user admin
       tags:
-      - admin
+      - Admin
   /admin/profile:
     get:
       consumes:
       - application/json
-      description: Retrieve all user profiles
+      description: This endpoint retrieves the profile information for all users.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
@@ -107,26 +109,26 @@ paths:
       - application/json
       responses:
         "200":
-          description: List of user profiles
+          description: A list of all user profiles.
           schema:
             items:
               $ref: '#/definitions/profile.Profile'
             type: array
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
         "404":
-          description: No profiles found
+          description: '{\"error\":\"No profiles found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to retrieve profiles
+          description: '{\"error\":\"Failed to retrieve profiles\"}'
           schema:
-            type: string
-      summary: Get all profiles
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all user profiles
       tags:
-      - admin
+      - Admin
   /admin/quote/approve/{id}:
     post:
       consumes:
@@ -208,16 +210,16 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Remove admin rights from a user by email
+      description: This endpoint allows an admin to revoke admin rights from a user.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: User email to remove admin rights
+      - description: The email of the user to have admin rights revoked.
         in: body
-        name: email
+        name: body
         required: true
         schema:
           $ref: '#/definitions/admin.EmailInput'
@@ -225,69 +227,73 @@ paths:
       - application/json
       responses:
         "200":
-          description: User admin rights have been revoked
+          description: '{\"message\":\"User example@example.com admin rights have
+            been revoked\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Invalid request body
+          description: '{\"error\":\"error validating email: invalid format\"}'
           schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Internal Server Error
+          description: '{\"error\":\"error removing admin rights:\"}'
           schema:
-            type: string
-      summary: Remove admin rights
+            additionalProperties:
+              type: string
+            type: object
+      summary: Remove user admin rights
       tags:
-      - admin
+      - Admin
   /profile/{id}:
     get:
       consumes:
       - application/json
-      description: Retrieve a user's profile by ID
+      description: This endpoint retrieves the profile information for a specific
+        user.
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: The ID of the user whose profile is to be retrieved.
+        in: path
+        name: id
         required: true
         type: string
       produces:
       - application/json
       responses:
         "200":
-          description: User profile data
+          description: The user's profile information.
           schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
+            $ref: '#/definitions/profile.Profile'
         "404":
-          description: Profile not found
+          description: '{\"error\":\"Profile not found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to retrieve profile
+          description: '{\"error\":\"Failed to retrieve profile\"}'
           schema:
-            type: string
-      summary: Get a user's profile
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get user profile
       tags:
-      - profile
+      - User
   /profile/create:
     post:
       consumes:
       - application/json
-      description: Create a new user profile
+      description: This endpoint allows a user to create their profile.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
@@ -296,122 +302,150 @@ paths:
       - application/json
       responses:
         "201":
-          description: Profile created successfully
+          description: '{\"message\":\"Profile created successfully\", \"user_email\":\"example@example.com\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Profile already exists
+          description: '{\"error\":\"Profile already exists\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to create profile
+          description: '{\"error\":\"Failed to create profile\"}'
           schema:
-            type: string
-      summary: Create profile
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create user profile
       tags:
-      - profile
+      - Profile
   /profile/delete/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete a user's profile by ID
+      description: This endpoint allows a user to delete their profile. Admins can
+        delete any profile.
       parameters:
-      - description: User ID
+      - description: ID token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: The ID of the user whose profile is to be deleted.
         in: path
         name: id
         required: true
         type: string
-      - description: JWT token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: Profile deleted successfully
+          description: '{\"message\":\"Profile deleted successfully\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "403":
-          description: Not authorized
+          description: '{\"error\":\"not authorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "404":
-          description: Profile not found
+          description: '{\"error\":\"Profile not found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to delete profile
+          description: '{\"error\":\"Failed to delete profile\"}'
           schema:
-            type: string
-      summary: Delete a user's profile
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete user profile
       tags:
-      - profile
+      - Profile
   /profile/update:
     put:
       consumes:
       - application/json
-      description: Update the bio and username of the user profile
+      description: This endpoint allows a user to update their profile information.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: New bio
+      - description: The new bio for the user.
         in: body
         name: bio
-        required: true
         schema:
           type: string
-      - description: New username
+      - description: The new username for the user.
         in: body
         name: username
-        required: true
         schema:
           type: string
       produces:
       - application/json
       responses:
         "200":
-          description: Profile updated successfully
+          description: '{\"message\":\"Profile updated successfully\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Invalid request body
+          description: '{\"error\":\"Invalid request body\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "404":
-          description: Profile not found
+          description: '{\"error\":\"Profile not found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to update profile
+          description: '{\"error\":\"Failed to update profile\"}'
           schema:
-            type: string
-      summary: Update profile
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update user profile
       tags:
-      - profile
+      - Profile
   /quote:
     get:
       consumes:
       - application/json
-      description: Retrieve quotes based on user role
+      description: This endpoint retrieves quotes. Admins can retrieve all quotes,
+        while other users can only retrieve approved quotes.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
@@ -420,26 +454,34 @@ paths:
       - application/json
       responses:
         "200":
-          description: List of quotes
+          description: A list of quotes.
           schema:
-            items:
-              $ref: '#/definitions/quote.Quote'
-            type: array
+            additionalProperties:
+              items:
+                $ref: '#/definitions/quote.Quote'
+              type: array
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "404":
-          description: Quote not found
+          description: '{\"error\":\"Quote not found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to get quote
+          description: '{\"error\":\"Failed to get quote\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
       summary: Get quotes
       tags:
-      - quote
+      - Quote
   /quote/{profile-id}:
     get:
       consumes:
@@ -484,16 +526,16 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create a new quote
+      description: This endpoint allows a user to submit a new quote.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Quote details
+      - description: The quote to be submitted.
         in: body
-        name: requestBody
+        name: quote
         required: true
         schema:
           $ref: '#/definitions/quote.QuoteRequest'
@@ -501,36 +543,46 @@ paths:
       - application/json
       responses:
         "201":
-          description: Quote created successfully
+          description: '{\"message\":\"Quote created successfully\", \"quote\":\"Example
+            quote text\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Invalid request body
+          description: '{\"error\":\"Invalid request body\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to create quote
+          description: '{\"error\":\"Failed to create quote\"}'
           schema:
-            type: string
-      summary: Create quote
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new quote
       tags:
-      - quote
+      - Quote
   /quote/delete/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete an existing quote
+      description: This endpoint allows a user to delete an existing quote. Admins
+        can delete any quote.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: ID of the quote to delete
+      - description: The ID of the quote to be deleted.
         in: path
         name: id
         required: true
@@ -538,74 +590,103 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Quote deleted successfully
+        "200":
+          description: '{\"message\":\"Quote deleted successfully\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: '{\"error\":\"Failed to delete quote\"}'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized access\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "403":
-          description: not authorized
+          description: '{\"error\":\"not authorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "404":
-          description: Quote not found
+          description: '{\"error\":\"Quote not found\"}'
           schema:
-            type: string
-        "500":
-          description: Failed to delete quote
-          schema:
-            type: string
-      summary: Delete quote
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete an existing quote
       tags:
-      - quote
+      - Quote
   /quote/update:
     put:
       consumes:
       - application/json
-      description: Update an existing quote
+      description: This endpoint allows a user to update an existing quote. Admins
+        can update any quote.
       parameters:
-      - description: JWT token
+      - description: ID token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Quote details
+      - description: The ID of the quote to be updated.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The updated quote text.
         in: body
-        name: requestBody
+        name: quote
         required: true
         schema:
           $ref: '#/definitions/quote.QuoteUpdateRequest'
       produces:
       - application/json
       responses:
-        "201":
-          description: Quote updated successfully
+        "200":
+          description: '{\"message\":\"Quote updated successfully\", \"quote\":\"Updated
+            quote text\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "400":
-          description: Invalid request body
+          description: '{\"error\":\"Invalid request body\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "401":
-          description: Unauthorized
+          description: '{\"error\":\"Unauthorized access\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "403":
-          description: not authorized
+          description: '{\"error\":\"not authorized\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "404":
-          description: Quote not found
+          description: '{\"error\":\"Quote not found\"}'
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Failed to update quote
+          description: '{\"error\":\"Failed to update quote\"}'
           schema:
-            type: string
-      summary: Update quote
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update an existing quote
       tags:
-      - quote
+      - Quote
 swagger: "2.0"

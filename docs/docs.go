@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/admin/make": {
             "post": {
-                "description": "Make a user an admin by email",
+                "description": "This endpoint allows an admin to promote a user to an admin role.",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,20 +25,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "Admin"
                 ],
                 "summary": "Make user admin",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
-                        "description": "User email to make admin",
-                        "name": "email",
+                        "description": "The email of the user to be promoted to admin.",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -48,27 +48,30 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "User is now an admin",
+                        "description": "{\\\"message\\\":\\\"User example@example.com is now an admin\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid request body",
+                        "description": "{\\\"error\\\":\\\"error validating email: invalid format\\\"}",
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "{\\\"error\\\":\\\"error making admin:\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -76,7 +79,7 @@ const docTemplate = `{
         },
         "/admin/profile": {
             "get": {
-                "description": "Retrieve all user profiles",
+                "description": "This endpoint retrieves the profile information for all users.",
                 "consumes": [
                     "application/json"
                 ],
@@ -84,13 +87,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "Admin"
                 ],
-                "summary": "Get all profiles",
+                "summary": "Get all user profiles",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -98,7 +101,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of user profiles",
+                        "description": "A list of all user profiles.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -106,22 +109,22 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "404": {
-                        "description": "No profiles found",
+                        "description": "{\\\"error\\\":\\\"No profiles found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to retrieve profiles",
+                        "description": "{\\\"error\\\":\\\"Failed to retrieve profiles\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -245,7 +248,7 @@ const docTemplate = `{
         },
         "/admin/remove": {
             "delete": {
-                "description": "Remove admin rights from a user by email",
+                "description": "This endpoint allows an admin to revoke admin rights from a user.",
                 "consumes": [
                     "application/json"
                 ],
@@ -253,20 +256,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "Admin"
                 ],
-                "summary": "Remove admin rights",
+                "summary": "Remove user admin rights",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
-                        "description": "User email to remove admin rights",
-                        "name": "email",
+                        "description": "The email of the user to have admin rights revoked.",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -276,27 +279,30 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "User admin rights have been revoked",
+                        "description": "{\\\"message\\\":\\\"User example@example.com admin rights have been revoked\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid request body",
+                        "description": "{\\\"error\\\":\\\"error validating email: invalid format\\\"}",
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "{\\\"error\\\":\\\"error removing admin rights:\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -304,7 +310,7 @@ const docTemplate = `{
         },
         "/profile/create": {
             "post": {
-                "description": "Create a new user profile",
+                "description": "This endpoint allows a user to create their profile.",
                 "consumes": [
                     "application/json"
                 ],
@@ -312,13 +318,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "profile"
+                    "Profile"
                 ],
-                "summary": "Create profile",
+                "summary": "Create user profile",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -326,27 +332,39 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Profile created successfully",
+                        "description": "{\\\"message\\\":\\\"Profile created successfully\\\", \\\"user_email\\\":\\\"example@example.com\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Profile already exists",
+                        "description": "{\\\"error\\\":\\\"Profile already exists\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to create profile",
+                        "description": "{\\\"error\\\":\\\"Failed to create profile\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -354,7 +372,7 @@ const docTemplate = `{
         },
         "/profile/delete/{id}": {
             "delete": {
-                "description": "Delete a user's profile by ID",
+                "description": "This endpoint allows a user to delete their profile. Admins can delete any profile.",
                 "consumes": [
                     "application/json"
                 ],
@@ -362,54 +380,69 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "profile"
+                    "Profile"
                 ],
-                "summary": "Delete a user's profile",
+                "summary": "Delete user profile",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
+                        "description": "ID token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "JWT token",
-                        "name": "Authorization",
-                        "in": "header",
+                        "description": "The ID of the user whose profile is to be deleted.",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Profile deleted successfully",
+                        "description": "{\\\"message\\\":\\\"Profile deleted successfully\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "403": {
-                        "description": "Not authorized",
+                        "description": "{\\\"error\\\":\\\"not authorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
-                        "description": "Profile not found",
+                        "description": "{\\\"error\\\":\\\"Profile not found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to delete profile",
+                        "description": "{\\\"error\\\":\\\"Failed to delete profile\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -417,7 +450,7 @@ const docTemplate = `{
         },
         "/profile/update": {
             "put": {
-                "description": "Update the bio and username of the user profile",
+                "description": "This endpoint allows a user to update their profile information.",
                 "consumes": [
                     "application/json"
                 ],
@@ -425,31 +458,29 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "profile"
+                    "Profile"
                 ],
-                "summary": "Update profile",
+                "summary": "Update user profile",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
-                        "description": "New bio",
+                        "description": "The new bio for the user.",
                         "name": "bio",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "description": "New username",
+                        "description": "The new username for the user.",
                         "name": "username",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -457,33 +488,48 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Profile updated successfully",
+                        "description": "{\\\"message\\\":\\\"Profile updated successfully\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid request body",
+                        "description": "{\\\"error\\\":\\\"Invalid request body\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
-                        "description": "Profile not found",
+                        "description": "{\\\"error\\\":\\\"Profile not found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to update profile",
+                        "description": "{\\\"error\\\":\\\"Failed to update profile\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -491,7 +537,7 @@ const docTemplate = `{
         },
         "/profile/{id}": {
             "get": {
-                "description": "Retrieve a user's profile by ID",
+                "description": "This endpoint retrieves the profile information for a specific user.",
                 "consumes": [
                     "application/json"
                 ],
@@ -499,48 +545,48 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "profile"
+                    "User"
                 ],
-                "summary": "Get a user's profile",
+                "summary": "Get user profile",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
+                        "description": "ID token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "JWT token",
-                        "name": "Authorization",
-                        "in": "header",
+                        "description": "The ID of the user whose profile is to be retrieved.",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "User profile data",
+                        "description": "The user's profile information.",
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/profile.Profile"
                         }
                     },
                     "404": {
-                        "description": "Profile not found",
+                        "description": "{\\\"error\\\":\\\"Profile not found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to retrieve profile",
+                        "description": "{\\\"error\\\":\\\"Failed to retrieve profile\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -548,7 +594,7 @@ const docTemplate = `{
         },
         "/quote": {
             "get": {
-                "description": "Retrieve quotes based on user role",
+                "description": "This endpoint retrieves quotes. Admins can retrieve all quotes, while other users can only retrieve approved quotes.",
                 "consumes": [
                     "application/json"
                 ],
@@ -556,13 +602,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "quote"
+                    "Quote"
                 ],
                 "summary": "Get quotes",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -570,30 +616,42 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of quotes",
+                        "description": "A list of quotes.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/quote.Quote"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/quote.Quote"
+                                }
                             }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
-                        "description": "Quote not found",
+                        "description": "{\\\"error\\\":\\\"Quote not found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to get quote",
+                        "description": "{\\\"error\\\":\\\"Failed to get quote\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -601,7 +659,7 @@ const docTemplate = `{
         },
         "/quote/create": {
             "post": {
-                "description": "Create a new quote",
+                "description": "This endpoint allows a user to submit a new quote.",
                 "consumes": [
                     "application/json"
                 ],
@@ -609,20 +667,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "quote"
+                    "Quote"
                 ],
-                "summary": "Create quote",
+                "summary": "Create a new quote",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
-                        "description": "Quote details",
-                        "name": "requestBody",
+                        "description": "The quote to be submitted.",
+                        "name": "quote",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -632,27 +690,39 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Quote created successfully",
+                        "description": "{\\\"message\\\":\\\"Quote created successfully\\\", \\\"quote\\\":\\\"Example quote text\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid request body",
+                        "description": "{\\\"error\\\":\\\"Invalid request body\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to create quote",
+                        "description": "{\\\"error\\\":\\\"Failed to create quote\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -660,7 +730,7 @@ const docTemplate = `{
         },
         "/quote/delete/{id}": {
             "delete": {
-                "description": "Delete an existing quote",
+                "description": "This endpoint allows a user to delete an existing quote. Admins can delete any quote.",
                 "consumes": [
                     "application/json"
                 ],
@@ -668,54 +738,69 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "quote"
+                    "Quote"
                 ],
-                "summary": "Delete quote",
+                "summary": "Delete an existing quote",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "ID of the quote to delete",
+                        "description": "The ID of the quote to be deleted.",
                         "name": "id",
                         "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Quote deleted successfully",
+                    "200": {
+                        "description": "{\\\"message\\\":\\\"Quote deleted successfully\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{\\\"error\\\":\\\"Failed to delete quote\\\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized access\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "403": {
-                        "description": "not authorized",
+                        "description": "{\\\"error\\\":\\\"not authorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
-                        "description": "Quote not found",
+                        "description": "{\\\"error\\\":\\\"Quote not found\\\"}",
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to delete quote",
-                        "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -723,7 +808,7 @@ const docTemplate = `{
         },
         "/quote/update": {
             "put": {
-                "description": "Update an existing quote",
+                "description": "This endpoint allows a user to update an existing quote. Admins can update any quote.",
                 "consumes": [
                     "application/json"
                 ],
@@ -731,20 +816,27 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "quote"
+                    "Quote"
                 ],
-                "summary": "Update quote",
+                "summary": "Update an existing quote",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT token",
+                        "description": "ID token",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
-                        "description": "Quote details",
-                        "name": "requestBody",
+                        "type": "string",
+                        "description": "The ID of the quote to be updated.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The updated quote text.",
+                        "name": "quote",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -753,40 +845,58 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Quote updated successfully",
+                    "200": {
+                        "description": "{\\\"message\\\":\\\"Quote updated successfully\\\", \\\"quote\\\":\\\"Updated quote text\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Invalid request body",
+                        "description": "{\\\"error\\\":\\\"Invalid request body\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "{\\\"error\\\":\\\"Unauthorized access\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "403": {
-                        "description": "not authorized",
+                        "description": "{\\\"error\\\":\\\"not authorized\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
-                        "description": "Quote not found",
+                        "description": "{\\\"error\\\":\\\"Quote not found\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Failed to update quote",
+                        "description": "{\\\"error\\\":\\\"Failed to update quote\\\"}",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -933,7 +1043,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
-	Host:             "localhost:8082",
+	Host:             "https://cprime50.github.io/FireGo-swagger/",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Fire-Go",
