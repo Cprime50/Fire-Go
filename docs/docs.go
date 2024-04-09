@@ -1043,7 +1043,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
-	Host:             "https://cprime50.github.io/FireGo-swagger/",
+	Host:             "cprime50.github.io/FireGo-swagger",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Fire-Go",
