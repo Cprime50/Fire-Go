@@ -110,7 +110,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "{\\\"error\\\":\\\"No profiles found\\\"}",
+                        "description": "{\"error\":\"No profiles found\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -119,7 +119,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "{\\\"error\\\":\\\"Failed to retrieve profiles\\\"}",
+                        "description": "{\"error\":\"Failed to retrieve profiles\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -572,7 +572,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "{\\\"error\\\":\\\"Profile not found\\\"}",
+                        "description": "{\"error\":\"Profile not found\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -581,7 +581,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "{\\\"error\\\":\\\"Failed to retrieve profile\\\"}",
+                        "description": "{\"error\":\"Failed to retrieve profile\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1043,11 +1043,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
-	Host:             "cprime50.github.io",
+	Host:             "localhost:8082",
 	BasePath:         "/api",
 	Schemes:          []string{},
-	Title:            "Fire-Go",
-	Description:      "Build modern Go apps",
+	Title:            "FireGo",
+	Description:      "A server for a simple Go application",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

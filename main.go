@@ -24,7 +24,7 @@ import (
 // @title FireGo
 // @description A server for a simple Go application
 
-// @host cprime50.github.io
+// @host localhost:8082
 // @BasePath /api
 func main() {
 	loadEnv()

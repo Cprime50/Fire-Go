@@ -165,8 +165,8 @@ func DeleteProfile(c *gin.Context) {
 // @Param Authorization header string true "ID token"
 // @Param id path string true "The ID of the user whose profile is to be retrieved."
 // @Success 200 {object} Profile "The user's profile information."
-// @Failure 404 {object} map[string]string "{\"error\":\"Profile not found\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to retrieve profile\"}"
+// @Failure 404 {object} map[string]string "{"error":"Profile not found"}"
+// @Failure 500 {object} map[string]string "{"error":"Failed to retrieve profile"}"
 // @Router /profile/{id} [get]
 func GetProfile(c *gin.Context) {
 	userID := c.Param("id")
@@ -192,8 +192,8 @@ func GetProfile(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "ID token"
 // @Success 200 {object} []Profile "A list of all user profiles."
-// @Failure 404 {object} map[string]string "{\"error\":\"No profiles found\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to retrieve profiles\"}"
+// @Failure 404 {object} map[string]string "{"error":"No profiles found"}"
+// @Failure 500 {object} map[string]string "{"error":"Failed to retrieve profiles"}"
 // @Router /admin/profile [get]
 func GetAllProfiles(c *gin.Context) {
 	profiles, err := getAllProfiles()

@@ -47,11 +47,11 @@ definitions:
       quote:
         type: string
     type: object
-host: cprime50.github.io
+host: localhost:8082
 info:
   contact: {}
-  description: Build modern Go apps
-  title: Fire-Go
+  description: A server for a simple Go application
+  title: FireGo
 paths:
   /admin/make:
     post:
@@ -115,13 +115,13 @@ paths:
               $ref: '#/definitions/profile.Profile'
             type: array
         "404":
-          description: '{\"error\":\"No profiles found\"}'
+          description: '{"error":"No profiles found"}'
           schema:
             additionalProperties:
               type: string
             type: object
         "500":
-          description: '{\"error\":\"Failed to retrieve profiles\"}'
+          description: '{"error":"Failed to retrieve profiles"}'
           schema:
             additionalProperties:
               type: string
@@ -273,13 +273,13 @@ paths:
           schema:
             $ref: '#/definitions/profile.Profile'
         "404":
-          description: '{\"error\":\"Profile not found\"}'
+          description: '{"error":"Profile not found"}'
           schema:
             additionalProperties:
               type: string
             type: object
         "500":
-          description: '{\"error\":\"Failed to retrieve profile\"}'
+          description: '{"error":"Failed to retrieve profile"}'
           schema:
             additionalProperties:
               type: string

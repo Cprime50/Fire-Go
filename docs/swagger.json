@@ -1,11 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Build modern Go apps",
-        "title": "Fire-Go",
+        "description": "A server for a simple Go application",
+        "title": "FireGo",
         "contact": {}
     },
-    "host": "cprime50.github.io",
+    "host": "localhost:8082",
     "basePath": "/api",
     "paths": {
         "/admin/make": {
@@ -103,7 +103,7 @@
                         }
                     },
                     "404": {
-                        "description": "{\\\"error\\\":\\\"No profiles found\\\"}",
+                        "description": "{\"error\":\"No profiles found\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -112,7 +112,7 @@
                         }
                     },
                     "500": {
-                        "description": "{\\\"error\\\":\\\"Failed to retrieve profiles\\\"}",
+                        "description": "{\"error\":\"Failed to retrieve profiles\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -565,7 +565,7 @@
                         }
                     },
                     "404": {
-                        "description": "{\\\"error\\\":\\\"Profile not found\\\"}",
+                        "description": "{\"error\":\"Profile not found\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -574,7 +574,7 @@
                         }
                     },
                     "500": {
-                        "description": "{\\\"error\\\":\\\"Failed to retrieve profile\\\"}",
+                        "description": "{\"error\":\"Failed to retrieve profile\"}",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
