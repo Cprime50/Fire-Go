@@ -159,7 +159,7 @@ func DeleteProfile(c *gin.Context) {
 
 // @Summary Get user profile
 // @Description This endpoint retrieves the profile information for a specific user.
-// @Tags User
+// @Tags Profile
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "ID token"

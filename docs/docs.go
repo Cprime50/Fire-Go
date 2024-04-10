@@ -545,7 +545,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "Get user profile",
                 "parameters": [

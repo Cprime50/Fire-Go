@@ -286,7 +286,7 @@ paths:
             type: object
       summary: Get user profile
       tags:
-      - User
+      - Profile
   /profile/create:
     post:
       consumes:
