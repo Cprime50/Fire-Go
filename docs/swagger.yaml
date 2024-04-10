@@ -47,7 +47,7 @@ definitions:
       quote:
         type: string
     type: object
-host: https://cprime50.github.io/FireGo-swagger/
+host: cprime50.github.io
 info:
   contact: {}
   description: Build modern Go apps

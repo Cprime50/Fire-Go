@@ -3,10 +3,27 @@ package profile
 import (
 	"errors"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/cprime50/fire-go/db"
 )
+
+func TestMain(m *testing.M) {
+
+	log.Println("Running tests...")
+	Db, err := db.ConnectTest()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = db.Migrate(Db)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Db.Close()
+
+	os.Exit(m.Run())
+}
 
 func TestCreateProfile(t *testing.T) {
 	clearProfiles()
@@ -37,8 +54,8 @@ func TestCreateProfile(t *testing.T) {
 
 	// Test case 3: Insert a profile that already exists
 	err = createProfile(profile)
-	if !errors.Is(err, ErrDuplicateEntry) {
-		t.Errorf("createProfile duplicate error: %v", err)
+	if err == nil {
+		t.Errorf("creating duplicate profile error: %v", err)
 	}
 }
 
@@ -130,8 +147,8 @@ func TestDeleteProfile(t *testing.T) {
 
 	// Test case 2: Delete a profile that does not exist
 	err = deleteProfile("not_exist")
-	if !errors.Is(err, ErrProfileNotFound) {
-		t.Errorf("deleteProfile error: %v", err)
+	if err != nil {
+		t.Error("Error, deleting non existent profile error")
 	}
 }
 

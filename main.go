@@ -21,10 +21,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title Fire-Go
-// @description Build modern Go apps
+// @title FireGo
+// @description A server for a simple Go application
 
-// @host https://cprime50.github.io/FireGo-swagger/
+// @host cprime50.github.io
 // @BasePath /api
 func main() {
 	loadEnv()
