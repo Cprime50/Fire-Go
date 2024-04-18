@@ -18,18 +18,6 @@ type QuoteUpdateRequest struct {
 	Quote string `json:"quote"`
 }
 
-// @Summary Create a new quote
-// @Description This endpoint allows a user to submit a new quote.
-// @Tags Quote
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param quote body QuoteRequest true "The quote to be submitted."
-// @Success 201 {object} map[string]string "{\"message\":\"Quote created successfully\", \"quote\":\"Example quote text\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
-// @Failure 400 {object} map[string]string "{\"error\":\"Invalid request body\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to create quote\"}"
-// @Router /quote/create [post]
 func CreateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -56,21 +44,6 @@ func CreateQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": quoteRequest.Quote})
 }
 
-// @Summary Update an existing quote
-// @Description This endpoint allows a user to update an existing quote. Admins can update any quote.
-// @Tags Quote
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param id path string true "The ID of the quote to be updated."
-// @Param quote body QuoteUpdateRequest true "The updated quote text."
-// @Success 200 {object} map[string]string "{\"message\":\"Quote updated successfully\", \"quote\":\"Updated quote text\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized access\"}"
-// @Failure 400 {object} map[string]string "{\"error\":\"Invalid request body\"}"
-// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
-// @Failure 403 {object} map[string]string "{\"error\":\"not authorized\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to update quote\"}"
-// @Router /quote/update [put]
 func UpdateQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -119,19 +92,6 @@ func UpdateQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote created successfully", "quote": requestBody.Quote})
 }
 
-// @Summary Delete an existing quote
-// @Description This endpoint allows a user to delete an existing quote. Admins can delete any quote.
-// @Tags Quote
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param id path string true "The ID of the quote to be deleted."
-// @Success 200 {object} map[string]string "{\"message\":\"Quote deleted successfully\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized access\"}"
-// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
-// @Failure 403 {object} map[string]string "{\"error\":\"not authorized\"}"
-// @Failure 400 {object} map[string]string "{\"error\":\"Failed to delete quote\"}"
-// @Router /quote/delete/{id} [delete]
 func DeleteQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -170,17 +130,6 @@ func DeleteQuote(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Quote deleted successfully"})
 }
 
-// @Summary Get quotes
-// @Description This endpoint retrieves quotes. Admins can retrieve all quotes, while other users can only retrieve approved quotes.
-// @Tags Quote
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Success 200 {object} map[string][]Quote "A list of quotes."
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
-// @Failure 404 {object} map[string]string "{\"error\":\"Quote not found\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to get quote\"}"
-// @Router /quote [get]
 func GetQuotes(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -211,18 +160,6 @@ func GetQuotes(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"quotes": quotes})
 }
 
-// @Summary Get quotes by user ID
-// @Description Retrieve quotes by user ID
-// @Tags quote
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "JWT token"
-// @Param profile-id path string true "User ID"
-// @Success 200 {array} Quote "List of quotes"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 404 {string} string "Quote not found"
-// @Failure 500 {string} string "Failed to get quote"
-// @Router /quote/{profile-id} [get]
 func GetQuotesByUserId(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -256,19 +193,6 @@ func GetQuotesByUserId(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"quotes": quotes})
 }
 
-// @Summary Approve quote
-// @Description Approve a quote by ID
-// @Tags admin
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "JWT token"
-// @Param id path string true "Quote ID"
-// @Success 200 {string} string "Quote approved successfully"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 403 {string} string "Unauthorized"
-// @Failure 404 {string} string "Quote not found"
-// @Failure 500 {string} string "Failed to approve quote"
-// @Router /admin/quote/approve/{id} [post]
 func ApproveQuote(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -299,17 +223,6 @@ func ApproveQuote(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Quote approved successfully"})
 }
 
-// @Summary Get unapproved quotes
-// @Description Get all unapproved quotes
-// @Tags admin
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "JWT token"
-// @Success 200 {array} Quote "List of unapproved quotes"
-// @Failure 401 {string} string "Unauthorized"
-// @Failure 404 {string} string "No unapproved quotes found"
-// @Failure 500 {string} string "Failed to get unapproved quotes"
-// @Router /admin/quote/unapproved [get]
 func GetUnapprovedQuotes(c *gin.Context) {
 	unapprovedQuotes, err := getUnapprovedQuotes()
 	if err != nil {

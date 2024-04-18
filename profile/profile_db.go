@@ -83,7 +83,6 @@ func updateProfile(p *Profile) error {
 	return nil
 }
 
-// DeleteProfile deletes a user profile by user ID.
 func deleteProfile(userId string) error {
 	_, err := db.Db.Exec("DELETE FROM profiles WHERE user_id = $1", userId)
 	if err != nil {
@@ -92,7 +91,6 @@ func deleteProfile(userId string) error {
 	return nil
 }
 
-// GetAllProfiles retrieves all user profiles.
 func getAllProfiles() ([]*Profile, error) {
 	rows, err := db.Db.Query("SELECT * FROM profiles")
 	if err != nil {

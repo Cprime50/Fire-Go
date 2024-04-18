@@ -11,17 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Create user profile
-// @Description This endpoint allows a user to create their profile.
-// @Tags Profile
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Success 201 {object} map[string]string "{\"message\":\"Profile created successfully\", \"user_email\":\"example@example.com\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
-// @Failure 400 {object} map[string]string "{\"error\":\"Profile already exists\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to create profile\"}"
-// @Router /profile/create [post]
 func CreateProfile(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -62,20 +51,6 @@ func CreateProfile(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Profile created successfully", "user_email": userData.Email})
 }
 
-// @Summary Update user profile
-// @Description This endpoint allows a user to update their profile information.
-// @Tags Profile
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param bio body string false "The new bio for the user."
-// @Param username body string false "The new username for the user."
-// @Success 200 {object} map[string]string "{\"message\":\"Profile updated successfully\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
-// @Failure 400 {object} map[string]string "{\"error\":\"Invalid request body\"}"
-// @Failure 404 {object} map[string]string "{\"error\":\"Profile not found\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to update profile\"}"
-// @Router /profile/update [put]
 func UpdateProfile(c *gin.Context) {
 	user, ok := getUserFromCtx(c)
 	if !ok {
@@ -112,19 +87,6 @@ func UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Profile updated successfully"})
 }
 
-// @Summary Delete user profile
-// @Description This endpoint allows a user to delete their profile. Admins can delete any profile.
-// @Tags Profile
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param id path string true "The ID of the user whose profile is to be deleted."
-// @Success 200 {object} map[string]string "{\"message\":\"Profile deleted successfully\"}"
-// @Failure 401 {object} map[string]string "{\"error\":\"Unauthorized\"}"
-// @Failure 403 {object} map[string]string "{\"error\":\"not authorized\"}"
-// @Failure 404 {object} map[string]string "{\"error\":\"Profile not found\"}"
-// @Failure 500 {object} map[string]string "{\"error\":\"Failed to delete profile\"}"
-// @Router /profile/delete/{id} [delete]
 func DeleteProfile(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -157,17 +119,6 @@ func DeleteProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Profile deleted successfully"})
 }
 
-// @Summary Get user profile
-// @Description This endpoint retrieves the profile information for a specific user.
-// @Tags Profile
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Param id path string true "The ID of the user whose profile is to be retrieved."
-// @Success 200 {object} Profile "The user's profile information."
-// @Failure 404 {object} map[string]string "{"error":"Profile not found"}"
-// @Failure 500 {object} map[string]string "{"error":"Failed to retrieve profile"}"
-// @Router /profile/{id} [get]
 func GetProfile(c *gin.Context) {
 	userID := c.Param("id")
 	profile, err := getProfileByUserId(userID)
@@ -185,16 +136,6 @@ func GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"profile": profile})
 }
 
-// @Summary Get all user profiles
-// @Description This endpoint retrieves the profile information for all users.
-// @Tags Admin
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "ID token"
-// @Success 200 {object} []Profile "A list of all user profiles."
-// @Failure 404 {object} map[string]string "{"error":"No profiles found"}"
-// @Failure 500 {object} map[string]string "{"error":"Failed to retrieve profiles"}"
-// @Router /admin/profile [get]
 func GetAllProfiles(c *gin.Context) {
 	profiles, err := getAllProfiles()
 	if err != nil {

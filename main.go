@@ -9,23 +9,16 @@ import (
 
 	"github.com/cprime50/fire-go/admin"
 	"github.com/cprime50/fire-go/db"
-	docs "github.com/cprime50/fire-go/docs"
+
 	"github.com/cprime50/fire-go/middleware"
 	"github.com/cprime50/fire-go/profile"
 	"github.com/cprime50/fire-go/quote"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-// @title FireGo
-// @description A server for a simple Go application
-
-// @host localhost:8082
-// @BasePath /api
 func main() {
 	loadEnv()
 
@@ -51,17 +44,12 @@ func main() {
 	}
 	defer db.Db.Close()
 
-	// Configure SwaggerInfo
-	docs.SwaggerInfo.BasePath = "/api"
-
 	r := gin.Default()
 	r.Use(cors.Default())
 
 	// Register routes
 	RegisterRoutes(r, client)
 	RegisterAdminRoutes(r, client)
-
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Set port
 	port := os.Getenv("PORT")
