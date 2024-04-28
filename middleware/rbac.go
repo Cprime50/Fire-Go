@@ -44,73 +44,30 @@ func RoleAuth(requiredRole string) gin.HandlerFunc {
 	}
 }
 
-func MakeAdmin(ctx context.Context, client *auth.Client, email string) error {
-	user, err := client.GetUserByEmail(ctx, email)
-	if err != nil {
-		return err
-	}
-	if user == nil {
-		return fmt.Errorf("MakeAdmin Error: User with email %s not found", email)
-	}
-
-	currentCustomClaims := user.CustomClaims
-	if currentCustomClaims == nil {
-		currentCustomClaims = map[string]interface{}{}
-	}
-	currentCustomClaims["role"] = "admin"
-
-	if _, found := currentCustomClaims["admin"]; !found {
-		currentCustomClaims["admin"] = true
-	}
-
-	if err := client.SetCustomUserClaims(ctx, user.UID, currentCustomClaims); err != nil {
-		return fmt.Errorf("MakeAdmin Error: Error setting custom claims %w", err)
-	}
-
-	return nil
-}
-
-func MakeUser(ctx context.Context, client *auth.Client, userID string) error {
-	user, err := client.GetUser(ctx, userID)
-	if err != nil {
-		return err
-	}
-	if user == nil {
-		return fmt.Errorf("MakeUser Error: User with ID %s not found", userID)
-	}
-	currentCustomClaims := user.CustomClaims
-	if currentCustomClaims == nil {
-		currentCustomClaims = map[string]interface{}{}
-	}
-	currentCustomClaims["role"] = "user"
-
-	if err := client.SetCustomUserClaims(ctx, user.UID, currentCustomClaims); err != nil {
-		return fmt.Errorf("MakeUser Error: Error setting custom claims: %w", err)
-	}
-
-	return nil
-}
-
-func RemoveAdmin(ctx context.Context, client *auth.Client, email string) error {
-	user, err := client.GetUserByEmail(ctx, email)
-	if err != nil {
-		return err
-	}
-	if user == nil {
-		return fmt.Errorf("RemoveAdmin Error: User with email %s not found", email)
-	}
-
-	currentCustomClaims := user.CustomClaims
-	if currentCustomClaims == nil {
-		currentCustomClaims = map[string]interface{}{}
-	}
-	currentCustomClaims["role"] = "user"
-
-	delete(currentCustomClaims, "admin")
-
-	if err := client.SetCustomUserClaims(ctx, user.UID, currentCustomClaims); err != nil {
-		return fmt.Errorf("RemoveAdmin Error: Error setting custom claims %w", err)
-	}
-
-	return nil
+func AssignRole(ctx context.Context, client *auth.Client, email string, role string) error {
+    user, err := client.GetUserByEmail(ctx, email)
+    if err != nil {
+        return err
+    }
+    if user == nil {
+        return fmt.Errorf("AssignRole Error: User with email %s not found", email)
+    }
+    currentCustomClaims := user.CustomClaims
+    if currentCustomClaims == nil {
+        currentCustomClaims = map[string]interface{}{}
+    }
+    currentCustomClaims["role"] = role
+    if role == "admin" {
+        currentCustomClaims["admin"] = true
+    }
+	else if role == "admin" {
+        currentCustomClaims["admin"] = true
+	} 
+	else {
+        delete(currentCustomClaims, "admin")
+    }
+    if err := client.SetCustomUserClaims(ctx, user.UID, currentCustomClaims); err != nil {
+        return fmt.Errorf("AssignRole Error: Error setting custom claims: %w", err)
+    }
+    return nil
 }

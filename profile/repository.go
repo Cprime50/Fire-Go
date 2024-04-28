@@ -2,30 +2,11 @@ package profile
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/cprime50/fire-go/db"
 	"github.com/google/uuid"
-)
-
-type Profile struct {
-	Id        string    `json:"id"`
-	UserId    string    `json:"user_id"`
-	Email     string    `json:"email"`
-	UserName  string    `json:"username"`
-	Bio       string    `json:"bio"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
-var (
-	ErrQuoteNotFound             = errors.New("quote not found")
-	ErrProfileNotFound           = errors.New("profile not found")
-	ErrDuplicateEntry            = errors.New("duplicate entry")
-	ErrForeignKeyViolation       = errors.New("foreign key violation")
-	ErrUniqueConstraintViolation = errors.New("unique constraint violation")
 )
 
 func createProfile(p *Profile) error {

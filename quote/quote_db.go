@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Quote represents a user quote.
 type Quote struct {
 	Id        string    `json:"id"`
 	UserId    string    `json:"user_id"`

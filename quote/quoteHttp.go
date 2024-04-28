@@ -25,14 +25,13 @@ func CreateQuote(c *gin.Context) {
 		return
 	}
 	var quoteRequest QuoteRequest
-	userData := user.(*middleware.User)
 	if err := c.ShouldBindJSON(&quoteRequest); err != nil {
 		log.Println("Error binding incoming json data", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 	err := createQuote(&Quote{
-		UserId:   userData.UserID,
+		UserId:   user.UserID,
 		Quote:    quoteRequest.Quote,
 		Approved: false,
 	})
@@ -50,8 +49,8 @@ func UpdateQuote(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized access"})
 		return
 	}
-	uid := user.(*middleware.User).UserID
-	role := user.(*middleware.User).Role
+	uid := user.UserID
+	role := user.Role
 
 	var requestBody QuoteUpdateRequest
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -73,7 +72,7 @@ func UpdateQuote(c *gin.Context) {
 
 	if role != "admin" {
 		if uid != quote.UserId {
-			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, role)
+			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.Email, role)
 			c.JSON(http.StatusForbidden, gin.H{"error": "not authorized"})
 			return
 		}
@@ -98,8 +97,8 @@ func DeleteQuote(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized access"})
 		return
 	}
-	uid := user.(*middleware.User).UserID
-	role := user.(*middleware.User).Role
+	uid := user.UserID
+	role := user.Role
 
 	id := c.Param("id")
 	quote, err := getQuoteById(id)
@@ -115,7 +114,7 @@ func DeleteQuote(c *gin.Context) {
 	}
 	if role != "admin" {
 		if uid != quote.UserId {
-			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.(*middleware.User).Email, role)
+			log.Printf("Unauthorized access to delete quote for user %s with role %s :", user.Email, role)
 			c.JSON(http.StatusForbidden, gin.H{"error": "not authorized"})
 			return
 		}
@@ -136,7 +135,7 @@ func GetQuotes(c *gin.Context) {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-	role := user.(*middleware.User).Role
+	role := user.Role
 
 	var quotes []*Quote
 	var err error
@@ -170,8 +169,8 @@ func GetQuotesByUserId(c *gin.Context) {
 	var quotes []*Quote
 	var err error
 
-	userID := user.(*middleware.User).UserID
-	role := user.(*middleware.User).Role
+	userID := user.UserID
+	role := user.Role
 
 	if role == "admin" || userID == c.Param("profile-id") {
 		quotes, err = getQuotesByUserId(userID)
@@ -200,9 +199,9 @@ func ApproveQuote(c *gin.Context) {
 		return
 	}
 
-	role := user.(*middleware.User).Role
+	role := user.Role
 	if role != "admin" {
-		log.Printf("Unauthorized access for user %s with role %s :", user.(*middleware.User).Email, user.(*middleware.User).Role)
+		log.Printf("Unauthorized access for user %s with role %s :", user.Email, user.Role)
 		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized"})
 		return
 	}
@@ -238,10 +237,10 @@ func GetUnapprovedQuotes(c *gin.Context) {
 	c.JSON(http.StatusOK, unapprovedQuotes)
 }
 
-func getUserFromCtx(ctx *gin.Context) (any, bool) {
+func getUserFromCtx(ctx *gin.Context) (*middleware.User, bool) {
 	user, exists := ctx.Get("user")
 	if !exists {
-		return "", false
+		return nil, false
 	}
-	return user, true
+	return user.(*middleware.User), true
 }

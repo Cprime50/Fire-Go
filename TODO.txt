@@ -1,0 +1,19 @@
+When working on the nextjs part, Use this tutorials
+
+Here skip the springboot part to the next js part
+https://www.youtube.com/watch?v=E8gaRFMXS9Y
+
+Or even better use this one:
+https://www.youtube.com/watch?v=EHDlebVv6zw
+
+Just skip to the NEXTjs part
+
+
+TODO
+Add table of content for medium article
+Authentication and Rbac with firebase,
+ seperate Business logic from http handlers,
+  testing api with insonmia,
+   dockerising,
+    ci/cd with github actions,
+     deployment on aws
