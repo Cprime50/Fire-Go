@@ -62,17 +62,17 @@ func processToken(ctx *gin.Context, client *auth.Client, token *auth.Token) {
 
 	role, ok := token.Claims["role"].(string)
 	if email == adminEmail && role == "user" || !ok {
-		if err := MakeAdmin(ctx, client, adminEmail); err != nil {
-			log.Printf("Error making adminEmail admin: %v\n", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Something wrong happened"})
+		if err := AssignRole(ctx, client, adminEmail, "admin"); err != nil {
+			log.Printf("Error assigning admin role to %s: %v\n", adminEmail, err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong"})
 			return
 		}
 		role = "admin"
 	}
 	if !ok {
-		if err := MakeUser(ctx, client, token.UID); err != nil {
-			log.Printf("Error making user regular user: %v\n", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Something wrong happened"})
+		if err := AssignRole(ctx, client, token.UID, "user"); err != nil {
+			log.Printf("Error assigning user role to %s: %v\n", token.UID, err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong"})
 			return
 		}
 		role = "user"
@@ -83,7 +83,6 @@ func processToken(ctx *gin.Context, client *auth.Client, token *auth.Token) {
 		Email:  email,
 		Role:   role,
 	}
-
 	ctx.Set("user", user)
 
 	log.Println("Successfully authenticated")

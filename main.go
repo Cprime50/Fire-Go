@@ -7,8 +7,8 @@ import (
 
 	"firebase.google.com/go/v4/auth"
 
-	"github.com/cprime50/fire-go/admin"
 	"github.com/cprime50/fire-go/db"
+	"github.com/cprime50/fire-go/role"
 
 	"github.com/cprime50/fire-go/middleware"
 	"github.com/cprime50/fire-go/profile"
@@ -71,44 +71,79 @@ func loadEnv() {
 }
 
 func RegisterRoutes(r *gin.Engine, client *auth.Client) {
+	s := profile.ProfileServiceImpl{} // Corrected instantiation
+
 	profileRoutes := r.Group("/profile")
 	profileRoutes.Use(middleware.Auth(client))
 	{
-
-		profileRoutes.POST("/create", profile.CreateProfile)
-		profileRoutes.PUT("/update", profile.UpdateProfile)
-		profileRoutes.DELETE("/delete/:id", profile.DeleteProfile)
-		profileRoutes.GET("/:id", profile.GetProfile)
+		profileRoutes.POST("/create", func(c *gin.Context) {
+			profile.CreateProfileHandler(c, s)
+		})
+		profileRoutes.PUT("/update", func(c *gin.Context) {
+			profile.UpdateProfileHandler(c, s)
+		})
+		profileRoutes.DELETE("/delete/:id", func(c *gin.Context) {
+			profile.DeleteProfileHandler(c, s)
+		})
+		profileRoutes.GET("/:id", func(c *gin.Context) {
+			profile.GetProfileHandler(c, s)
+		})
 	}
+
+	quoteService := &quote.QuoteServiceImpl{}
 
 	quoteRoutes := r.Group("/quote")
 	quoteRoutes.Use(middleware.Auth(client))
 	{
-		quoteRoutes.GET("/", quote.GetQuotes)
-		quoteRoutes.POST("/create", quote.CreateQuote)
-		quoteRoutes.PUT("/update", quote.UpdateQuote)
-		quoteRoutes.DELETE("/delete/:id", quote.DeleteQuote)
-		quoteRoutes.GET("/:profile-id", quote.GetQuotesByUserId)
-
+		quoteRoutes.POST("/create", func(c *gin.Context) {
+			quote.CreateQuoteHandler(c, quoteService)
+		})
+		quoteRoutes.PUT("/update", func(c *gin.Context) {
+			quote.UpdateQuoteHandler(c, quoteService)
+		})
+		quoteRoutes.DELETE("/delete/:id", func(c *gin.Context) {
+			quote.DeleteQuoteHandler(c, quoteService)
+		})
+		quoteRoutes.GET("/", func(c *gin.Context) {
+			quote.GetQuotesHandler(c, quoteService)
+		})
+		quoteRoutes.GET("/quotes/:profile-id", func(c *gin.Context) {
+			quote.GetQuotesByUserIdHandler(c, quoteService)
+		})
+		quoteRoutes.PUT("/approve/:id", func(c *gin.Context) {
+			quote.ApproveQuoteHandler(c, quoteService)
+		})
+		quoteRoutes.GET("/unapproved", func(c *gin.Context) {
+			quote.GetUnapprovedQuotesHandler(c, quoteService)
+		})
 	}
 }
 
 // Admin routes
 func RegisterAdminRoutes(r *gin.Engine, client *auth.Client) {
+	profileService := profile.ProfileServiceImpl{}
+	quoteService := &quote.QuoteServiceImpl{}
+	adminService := role.NewAdminService(client)
 
 	adminRoutes := r.Group("/admin")
 	adminRoutes.Use(middleware.Auth(client), middleware.RoleAuth("admin"))
 	{
-		adminRoutes.GET("/profiles", profile.GetAllProfiles)
-		adminRoutes.POST("/quote/approve/:id", quote.ApproveQuote)
-		adminRoutes.GET("/quote/unapproved", quote.GetUnapprovedQuotes)
+		adminRoutes.GET("/profiles", func(c *gin.Context) {
+			profile.GetAllProfilesHandler(c, profileService)
+		})
+		// Update this line to use the separated handler for approving quotes
+		adminRoutes.POST("/quote/approve/:id", func(c *gin.Context) {
+			quote.ApproveQuoteHandler(c, quoteService)
+		})
+		// Update this line to use the separated handler for getting unapproved quotes
+		adminRoutes.GET("/quote/unapproved", func(c *gin.Context) {
+			quote.GetUnapprovedQuotesHandler(c, quoteService)
+		})
 		adminRoutes.POST("/make", func(ctx *gin.Context) {
-			admin.MakeAdmin(ctx, client)
+			role.MakeAdminHandler(ctx, adminService)
 		})
 		adminRoutes.DELETE("/remove", func(ctx *gin.Context) {
-			admin.RemoveAdmin(ctx, client)
+			role.RemoveAdminHandler(ctx, adminService)
 		})
-
 	}
-
 }

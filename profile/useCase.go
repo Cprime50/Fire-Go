@@ -6,14 +6,10 @@ import (
 	"time"
 )
 
-var (
-// ErrProfileNotFound = errors.New("profile not found")
-)
-
 type ProfileService interface {
 	CreateProfile(userID, email string) (*ProfileResponse, error)
 	UpdateProfile(userID, bio, username string) (*ProfileResponse, error)
-	DeleteProfile(userID string) error
+	DeleteProfile(userID string, role string, profileId string) error
 	GetProfile(userID string) (*Profile, error)
 	GetAllProfiles() ([]Profile, error)
 }
@@ -73,10 +69,9 @@ func (s *ProfileServiceImpl) UpdateProfile(userID, bio, username string) (*Profi
 		if errors.Is(err, ErrProfileNotFound) {
 			log.Printf("Error updating profile: %v", err)
 			return nil, ErrProfileNotFound
-		} else {
-			log.Printf("Error updating profile: %v", err)
-			return nil, ErrUpdateProfile
 		}
+		log.Printf("Error updating profile: %v", err)
+		return nil, ErrUpdateProfile
 
 	}
 
@@ -95,17 +90,52 @@ func (s *ProfileServiceImpl) UpdateProfile(userID, bio, username string) (*Profi
 	return response, nil
 }
 
-func (s *ProfileServiceImpl) DeleteProfile(userID string) error {
-	// Implement the logic to delete a profile
+func (s *ProfileServiceImpl) DeleteProfile(userID string, role string, profileId string) error {
+	err := deleteProfile(userID)
+	if err != nil {
+		if errors.Is(err, ErrProfileNotFound) {
+			log.Printf("Error deleting profile: %v", err)
+			return ErrProfileNotFound
+		}
+		log.Printf("Error deleting profile: %v", err)
+		return ErrDeletingProfile
+
+	}
+	if role != "admin" {
+		if userID != profileId {
+			log.Printf("DeleteProfile: Error User with id %s and role %s not allowed access to delete user with id %s", userID, role, profileId)
+			return ErrNotAuthorized
+		}
+	}
+
+	log.Printf("DeleteProfile: Profile deleted successfully for userID %s", userID)
 	return nil
 }
 
 func (s *ProfileServiceImpl) GetProfile(userID string) (*Profile, error) {
-	// Implement the logic to get a profile
-	return nil, ErrProfileNotFound
+	profile, err := getProfileByUserId(userID)
+	if err != nil {
+		if errors.Is(err, ErrProfileNotFound) {
+			log.Printf("GetProfile: Profile not found for userID %s", userID)
+			return nil, ErrProfileNotFound
+		}
+		log.Printf("GetProfile: Error retrieving profile for userID %s: %v", userID, err)
+		return nil, ErrGettingProfile
+	}
+
+	return profile, nil
 }
 
-func (s *ProfileServiceImpl) GetAllProfiles() ([]Profile, error) {
-	// Implement the logic to get all profiles
-	return nil, ErrProfileNotFound
+func (s *ProfileServiceImpl) GetAllProfiles() ([]*Profile, error) {
+	profiles, err := getAllProfiles()
+	if err != nil {
+		if errors.Is(err, ErrProfileNotFound) {
+			log.Print("GetAllProfiles: No profiles found")
+			return nil, ErrProfileNotFound
+		}
+		log.Printf("GetAllProfiles: Database error: %v", err)
+		return nil, ErrGettingProfile
+	}
+
+	return profiles, nil
 }

@@ -2,28 +2,11 @@ package quote
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/cprime50/fire-go/db"
 	"github.com/google/uuid"
-)
-
-type Quote struct {
-	Id        string    `json:"id"`
-	UserId    string    `json:"user_id"`
-	Quote     string    `json:"quote"`
-	Approved  bool      `json:"approved"`
-	CreatedAt time.Time `json:"created_at"`
-}
-
-var (
-	ErrQuoteNotFound             = errors.New("quote not found")
-	ErrProfileNotFound           = errors.New("profile not found")
-	ErrDuplicateEntry            = errors.New("duplicate entry")
-	ErrForeignKeyViolation       = errors.New("foreign key violation")
-	ErrUniqueConstraintViolation = errors.New("unique constraint violation")
 )
 
 func createQuote(quote *Quote) error {

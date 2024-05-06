@@ -1,20 +1,14 @@
-package admin
+package role
 
 import (
 	"fmt"
 	"log"
 	"net/http"
 
-	"firebase.google.com/go/v4/auth"
-	"github.com/cprime50/fire-go/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-type EmailInput struct {
-	Email string `json:"email"`
-}
-
-func MakeAdmin(ctx *gin.Context, client *auth.Client) {
+func MakeAdminHandler(ctx *gin.Context, service AdminService) {
 	var input EmailInput
 	if err := ctx.BindJSON(&input); err != nil {
 		log.Printf("Error binding JSON: %v", err)
@@ -29,7 +23,7 @@ func MakeAdmin(ctx *gin.Context, client *auth.Client) {
 		return
 	}
 
-	if err := middleware.AssignRole(ctx.Request.Context(), client, email, "admin"); err != nil {
+	if err := service.MakeAdmin(email); err != nil {
 		log.Printf("Error assigning admin role: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -38,7 +32,7 @@ func MakeAdmin(ctx *gin.Context, client *auth.Client) {
 	ctx.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("User %s is now an admin", input.Email)})
 }
 
-func RemoveAdmin(ctx *gin.Context, client *auth.Client) {
+func RemoveAdminHandler(ctx *gin.Context, service AdminService) {
 	var input EmailInput
 	if err := ctx.BindJSON(&input); err != nil {
 		log.Printf("Error binding JSON: %v", err)
@@ -53,7 +47,7 @@ func RemoveAdmin(ctx *gin.Context, client *auth.Client) {
 		return
 	}
 
-	if err := middleware.AssignRole(ctx.Request.Context(), client, email, "user"); err != nil {
+	if err := service.RemoveAdmin(email); err != nil {
 		log.Printf("Error assigning user role: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
